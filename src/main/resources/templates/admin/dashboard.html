@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard - BOMS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">BOMS</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/admin/users">Users</a>
+                <a class="nav-link" href="/admin/analytics">Analytics</a>
+                <a class="nav-link" href="/admin/logs">Logs</a>
+                <form th:action="@{/logout}" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-outline-light btn-sm">Logout</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h2>Admin Dashboard</h2>
+        
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="card bg-primary text-white">
+                    <div class="card-body text-center">
+                        <h4 th:text="${totalUsers}">0</h4>
+                        <p>Total Users</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-warning text-white">
+                    <div class="card-body text-center">
+                        <h4 th:text="${totalInquiries}">0</h4>
+                        <p>Total Inquiries</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-success text-white">
+                    <div class="card-body text-center">
+                        <h4 th:text="${totalProposals}">0</h4>
+                        <p>Total Proposals</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Quick Actions</h5>
+                    </div>
+                    <div class="card-body">
+                        <a href="/admin/users" class="btn btn-primary me-2">Manage Users</a>
+                        <a href="/admin/analytics" class="btn btn-success me-2">Analytics</a>
+                        <a href="/admin/logs" class="btn btn-info">System Logs</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Conversion Rates</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Inquiry to Proposal: <strong th:text="${inquiryToProposalRate != null ? inquiryToProposalRate + '%' : '0%'}">0%</strong></p>
+                        <p>Proposal to Project: <strong th:text="${proposalToProjectRate != null ? proposalToProjectRate + '%' : '0%'}">0%</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Contact Inquiries -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Contact Inquiries</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Status</th>
+                                        <th>Created Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="inquiry : ${inquiries}">
+                                        <td th:text="${inquiry.id}"></td>
+                                        <td th:text="${inquiry.name}"></td>
+                                        <td th:text="${inquiry.email}"></td>
+                                        <td><span class="badge bg-secondary" th:text="${inquiry.status}"></span></td>
+                                        <td th:text="${#temporals.format(inquiry.createdDate, 'yyyy-MM-dd')}"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Project Proposals -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Project Proposals</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Project Title</th>
+                                        <th>Client</th>
+                                        <th>Status</th>
+                                        <th>Created Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="proposal : ${proposals}">
+                                        <td th:text="${proposal.id}"></td>
+                                        <td th:text="${proposal.projectTitle}"></td>
+                                        <td th:text="${proposal.client}"></td>
+                                        <td><span class="badge bg-secondary" th:text="${proposal.status}"></span></td>
+                                        <td th:text="${#temporals.format(proposal.createdDate, 'yyyy-MM-dd')}"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

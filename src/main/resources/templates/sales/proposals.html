@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Proposals - BOMS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">BOMS</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/dashboard">Dashboard</a>
+                <a class="nav-link" href="/sales/inquiries">Inquiries</a>
+                <form th:action="@{/logout}" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-outline-light btn-sm">Logout</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h2>Project Proposals</h2>
+        
+        <div class="table-responsive mt-3">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Project Title</th>
+                        <th>Client</th>
+                        <th>Estimated Cost</th>
+                        <th>Duration</th>
+                        <th>Status</th>
+                        <th>Created By</th>
+                        <th>Created Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="proposal : ${proposals}">
+                        <td th:text="${proposal.id}"></td>
+                        <td th:text="${proposal.projectTitle}"></td>
+                        <td th:text="${proposal.client}"></td>
+                        <td th:text="${proposal.estimatedCost != null ? '$' + proposal.estimatedCost : 'N/A'}"></td>
+                        <td th:text="${proposal.duration ?: 'N/A'}"></td>
+                        <td>
+                            <span class="badge" th:classappend="${proposal.status.name() == 'PENDING' ? 'bg-warning' : 
+                                                                proposal.status.name() == 'APPROVED' ? 'bg-success' : 'bg-danger'}"
+                                  th:text="${proposal.status}"></span>
+                        </td>
+                        <td th:text="${proposal.createdBy?.fullName}"></td>
+                        <td th:text="${#temporals.format(proposal.createdDate, 'yyyy-MM-dd')}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
