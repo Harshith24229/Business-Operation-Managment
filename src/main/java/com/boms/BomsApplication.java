@@ -801,4 +801,207 @@ STEP 13: Check Notifications Sent
 ================================================================
 END OF API REFERENCE
 ================================================================
+*
+* 1. REGISTER PATIENT
+
+URL
+
+POST http://localhost:8080/api/users/register
+
+Headers
+
+{
+  "Content-Type": "application/json"
+}
+
+Body
+
+{
+  "firstName": "Ramesh",
+  "lastName": "Kumar",
+  "email": "ramesh@test.com",
+  "password": "Password@123",
+  "phone": "9393999999",
+  "role": "PATIENT",
+  "gender": "MALE",
+  "bloodGroup": "O+",
+  "city": "Bangalore"
+}
+🔐 2. LOGIN
+
+URL
+
+POST http://localhost:8080/api/users/login
+
+Headers
+
+{
+  "Content-Type": "application/json"
+}
+
+Body
+
+{
+  "email": "ramesh@test.com",
+  "password": "Password@123"
+}
+
+👉 Copy the token from response
+
+👤 3. GET MY PROFILE
+
+URL
+
+GET http://localhost:8080/api/users/me
+
+Headers
+
+{
+  "Authorization": "Bearer YOUR_TOKEN"
+}
+✏️ 4. UPDATE PROFILE
+
+URL
+
+PUT http://localhost:8080/api/users/me
+
+Headers
+
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_TOKEN"
+}
+
+Body
+
+{
+  "city": "Mysore",
+  "phone": "8888888888"
+}
+👑 ADMIN LOGIN
+POST http://localhost:8080/api/users/login
+{
+  "email": "admin@test.com",
+  "password": "Admin@123"
+}
+➕ 5. CREATE DOCTOR
+
+URL
+
+POST http://localhost:8080/api/users/admin/create
+
+Headers
+
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer ADMIN_TOKEN"
+}
+
+Body
+
+{
+  "firstName": "Ravi",
+  "lastName": "Kumar",
+  "email": "doc.rav@test.com",
+  "password": "Ravi@123",
+  "phone": "9088888888",
+  "role": "DOCTOR",
+  "specialization": "CARDIOLOGY",
+  "licenseNumber": "DOC123",
+  "department": "Heart",
+  "city": "Bangalore"
+}
+💰 6. CREATE CASHIER
+
+URL
+
+POST http://localhost:8080/api/users/admin/create
+
+Body
+
+{
+  "firstName": "Suresh",
+  "lastName": "Bhat",
+  "email": "cashier.suresh@test.com",
+  "password": "Cashsuresh@123",
+  "phone": "7077777777",
+  "role": "CASHIER",
+  "city": "Bangalore"
+}
+👀 7. GET USER BY ID
+GET http://localhost:8080/api/users/1
+📧 8. GET USER BY EMAIL
+GET http://localhost:8080/api/users/email/doctor@test.com
+👥 9. GET USERS BY ROLE
+PATIENT
+GET http://localhost:8080/api/users/role/PATIENT
+DOCTOR
+GET http://localhost:8080/api/users/role/DOCTOR
+CASHIER
+GET http://localhost:8080/api/users/role/CASHIER
+❌ 10. DELETE USER
+DELETE http://localhost:8080/api/users/admin/2
+🩺 11. GET ACTIVE DOCTORS
+GET http://localhost:8080/api/users/doctors/active
+📅 APPOINTMENT SERVICE
+➕ ADD DOCTOR SCHEDULE
+POST http://localhost:8080/api/appointments/schedules/add
+
+Params (Query)
+
+doctorId=7
+day=MONDAY
+startTime=09:00:00
+endTime=17:00:00
+slotDuration=30
+
+Headers
+
+{
+  "Authorization": "Bearer ADMIN_TOKEN"
+}
+📌 BOOK APPOINTMENT
+POST http://localhost:8080/api/appointments
+
+Headers
+
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer PATIENT_TOKEN"
+}
+
+Body
+
+{
+  "patientId": 6,
+  "patientName": "Ramesh Kumar",
+  "patientEmail": "ramesh@test.com",
+  "doctorId": 4,
+  "doctorName": "Dr Ravi",
+  "doctorEmail": "doctor@test.com",
+  "specialization": "Cardiology",
+  "department": "Heart",
+  "appointmentDate": "2026-04-21",
+  "appointmentTime": "10:30",
+  "type": "CONSULTATION",
+  "reason": "Regular checkup",
+  "notes": "N/A"
+}
+🔍 GET APPOINTMENT BY ID
+GET http://localhost:8080/api/appointments/1
+👤 GET PATIENT APPOINTMENTS
+GET http://localhost:8080/api/appointments/patient/1
+👨‍⚕️ GET DOCTOR APPOINTMENTS
+GET http://localhost:8080/api/appointments/doctor/2
+📅 GET DOCTOR APPOINTMENTS BY DATE
+GET http://localhost:8080/api/appointments/doctor/2/date/2026-04-10
+✅ CONFIRM APPOINTMENT
+PUT http://localhost:8080/api/appointments/1/confirm
+❌ CANCEL APPOINTMENT
+PUT http://localhost:8080/api/appointments/1/cancel?reason=Patient requested cancellation
+✔ COMPLETE APPOINTMENT
+PUT http://localhost:8080/api/appointments/1/complete
+🔄 RESCHEDULE APPOINTMENT
+PUT http://localhost:8080/api/appointments/1/reschedule?newDate=2026-04-15&newTime=14:00:00
+🔥 PRO TIP (IMPORTANT)
 */
